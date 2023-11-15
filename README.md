@@ -3,6 +3,12 @@
 A python package to simply judge your code.
 
 ## Usage quickstart
+First, install the package.
+1. cd openoj-judger
+2. pip3 install .
+
+Then, you can import the package in your project like the following code.
+
 ```python
 from judger.judger import judge
 
