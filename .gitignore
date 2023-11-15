@@ -1,5 +1,3 @@
-*.in
-*.out
 *.pyc
 dist
 *.egg-info
