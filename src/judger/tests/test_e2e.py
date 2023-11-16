@@ -1,6 +1,8 @@
 import unittest
 from ..judger import judge
 import os
+import logging
+
 
 class TestMyModule(unittest.TestCase):
     def test_API_judge_Python(self):

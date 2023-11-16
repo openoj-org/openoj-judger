@@ -40,8 +40,8 @@ class Runner:
         return self._run(cmd)
     
     def run_python(self):
-        # cmd = 'ulimit -s {} ; python3 {} < {} '.format(self.max_memory, self.exe, self.input)
-        cmd = 'python3 {} < {} '.format(self.exe, self.input)
+        cmd = 'ulimit -s {} ; python3 {} < {} '.format(self.max_memory, self.exe, self.input)
+        # cmd = 'python3 {} < {} '.format(self.exe, self.input)
         return self._run(cmd)
 
     def _run(self, cmd):
@@ -52,7 +52,7 @@ class Runner:
                 volumes = {DEFAULT_TMP_PATH: {'bind': '/home', 'mode': 'rw'}}
                 out = client.containers.run(IMAGE, cmd, volumes=volumes, remove=True)
             except docker.errors.ContainerError as e:
-                return {'success': False, 'error_type': 'Compilation Error','error': e.stderr.decode('utf-8')}
+                return {'success': False, 'error_type': 'Docker Error','error': e.stderr.decode('utf-8')}
 
         # subprocess ver.--------------------------------------
         else:
@@ -66,9 +66,11 @@ class Runner:
                 if p.returncode != 0:
                     if 'Segmentation fault' in err:
                         return {'success': False, 'error_type': 'MLE', 'error': err}
-                    return {'success': False, 'error_type': 'Runtime Error','error': err}
+                    return {'success': False, 'error_type': 'MLE','error': err}
             except subprocess.TimeoutExpired:
                 return {'success': False, 'error_type': 'TLE', 'error': 'Time Limit Exceeded'}
+            except subprocess.CalledProcessError:
+                return {'success': False, 'error_type': 'subprocess error', 'error': 'subprocess.CalledProcessError'}
         # -----------------------------------------------------
         
         user = hashlib.md5(out.rstrip().encode('utf-8')).hexdigest()
@@ -79,9 +81,3 @@ class Runner:
             return {'success': False, 'error_type':'WA', 'error': 'Wrong Answer'}
         else:
             return {'success': True}
-
-    #TODO test errors
-    # except subprocess.TimeoutExpired:
-    #     return {'success': False, 'error': 'TLE'}
-    # except subprocess.CalledProcessError:
-    #     return {'success': False, 'error': 'subprocess.CalledProcessError'}

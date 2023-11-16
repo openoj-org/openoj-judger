@@ -32,3 +32,8 @@ print(res)
 ```
 
 ## API (TODO)
+
+## Bugs to fix
+
+1. 目前采用Linux seccomp ulimit对stack size进行限制；但这样系统会将MLE处理成访问非法地址Segmentation Error，无法将MLE与Runtime Error进行区分了。
+2. 在docker环境中使用unlimit 和 timeout存在未知错误，无法正常执行run script
