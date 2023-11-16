@@ -63,7 +63,7 @@ def judge(data):
 
     #compile
     logger.info("Compiling...")
-    compiler = Compiler(src_file, data['language'], id)
+    compiler = Compiler(src_file, data['language'], id, data.get('use_docker', True))
     result = compiler.compile()
     logger.info(result)
     if result['success'] == False:
@@ -74,7 +74,7 @@ def judge(data):
     #run
     logger.info("Running...")
     for idx in range(len(data['test_case_input'])):
-        runner = Runner(exe_path, data['language'], idx, id, data['max_cpu_time'], data['max_memory'])
+        runner = Runner(exe_path, data['language'], idx, id, data['max_cpu_time'], data['max_memory'], data.get('use_docker', True))
         result = runner.run()
         if not result['success']:
             result['error_case'] = idx

@@ -4,12 +4,16 @@ from .config import DEFAULT_TMP_PATH, IMAGE
 import docker
 
 class Compiler:
-    def __init__(self, src_path, language, id):
-        self.language = language 
-        self.src_path = os.path.join(str(id), src_path)
-        self.exe_path = os.path.join(str(id), 'main')  # For C/C++ only
+    def __init__(self, src_path, language, id, use_docker=True):
+        self.language = language
+        if use_docker:
+            self.src_path = os.path.join('/home', str(id), src_path)
+            self.exe_path = os.path.join('/home', str(id), 'main')
+        else:
+            self.src_path = os.path.join(DEFAULT_TMP_PATH, str(id), src_path)
+            self.exe_path = os.path.join(DEFAULT_TMP_PATH, str(id), 'main')
         self.id = id
-
+        self.use_docker = use_docker
 
     def compile(self):
         if self.language == 'C':
@@ -42,20 +46,21 @@ class Compiler:
     def _compile(self, cmd):
         try:
             # docker ver. --------
-            client = docker.from_env()
-            volumes = {DEFAULT_TMP_PATH: {'bind': '/home', 'mode': 'rw'}}
-            try:
-                client.containers.run(IMAGE, cmd, volumes=volumes, remove=True)
-            except docker.errors.ContainerError as e:
-                return {'success': False, 'error_type': 'Compilation Error','error': e.stderr.decode('utf-8')}
+            if self.use_docker:
+                client = docker.from_env()
+                volumes = {DEFAULT_TMP_PATH: {'bind': '/home', 'mode': 'rw'}}
+                try:
+                    client.containers.run(IMAGE, cmd, volumes=volumes, remove=True)
+                except docker.errors.ContainerError as e:
+                    return {'success': False, 'error_type': 'Compilation Error','error': e.stderr.decode('utf-8')}
             # --------------------
-            
             # subprocess ver. --------
-            # docker_prefix = f"docker run -it -v {DEFAULT_TMP_PATH}:/home {IMAGE} "
-            # p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            # out, err = p.communicate()
-            # if p.returncode != 0:
-            #     return {'success':False, 'error':err.decode('utf-8')}
+            else:
+                # docker_prefix = f"docker run -it -v {DEFAULT_TMP_PATH}:/home {IMAGE} "
+                p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                out, err = p.communicate()
+                if p.returncode != 0:
+                    return {'success':False, 'error':err.decode('utf-8')}
             # ------------------------
                
             if self.language == 'C' or self.language == 'C++':
