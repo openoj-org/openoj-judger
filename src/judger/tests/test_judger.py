@@ -45,5 +45,16 @@ class TestMyModule(unittest.TestCase):
         self.assertEqual(result['success'], False)
         self.assertEqual(result['error_type'], 'WA')
 
+    def test_MLE(self):
+        cwd = os.path.dirname(os.path.abspath(__file__))
+        data = {'language':'C++', 
+                'src':os.path.join(cwd, 'data', 'mle.cpp'), 'max_cpu_time':1, 'max_memory':10,
+                'test_case_input':[os.path.join(cwd, 'data', 'input.in')],
+                'test_case_output':[os.path.join(cwd, 'data', 'output.out')],
+                'use_docker':False}
+        result = judge(data)
+        self.assertEqual(result['success'], False)
+        self.assertEqual(result['error_type'], 'MLE')
+
 if __name__ == '__main__':
     unittest.main()

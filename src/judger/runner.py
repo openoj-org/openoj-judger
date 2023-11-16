@@ -64,7 +64,9 @@ class Runner:
                 err = p.stderr.decode('utf-8')
                 out = p.stdout.decode('utf-8')
                 if p.returncode != 0:
-                    return {'success': False, 'error': err}
+                    if 'Segmentation fault' in err:
+                        return {'success': False, 'error_type': 'MLE', 'error': err}
+                    return {'success': False, 'error_type': 'Runtime Error','error': err}
             except subprocess.TimeoutExpired:
                 return {'success': False, 'error_type': 'TLE', 'error': 'Time Limit Exceeded'}
         # -----------------------------------------------------
