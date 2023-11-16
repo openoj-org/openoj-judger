@@ -17,7 +17,7 @@ from judger.judger import judge
 data = {'language':'Python', 
     'src':'/Users/stian/Desktop/SE_OJ/Judger/src.py',  #Both absolute path of source file or exact file in the type of <bytes> are supported.
     'max_cpu_time':10, #Timeout time, in seconds
-    'max_memory':1024*1024*1024, #Max stack size, in bytes
+    'max_memory':2*1024, #Max stack size, in KB
     'test_case_input':['/Users/stian/Desktop/SE_OJ/Judger/input.in'], # Must be list, it can be list of absolute path of files or exact files in the type of <bytes>.
     'test_case_output':['/Users/stian/Desktop/SE_OJ/Judger/output.out']} # Must be list, it can be list of absolute path of files or exact files in the type of <bytes>.
 res = judge(data)
@@ -37,3 +37,6 @@ print(res)
 
 1. 目前采用Linux seccomp ulimit对stack size进行限制；但这样系统会将MLE处理成访问非法地址Segmentation Error，无法将MLE与Runtime Error进行区分了。
 2. 在docker环境中使用unlimit 和 timeout存在未知错误，无法正常执行run script
+3. 并发效率
+4. 返回程序运行的 时间 和 内存 消耗
+5. 优化source code和test cases的传入效率
