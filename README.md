@@ -3,9 +3,11 @@
 A python package to simply judge your code.
 
 ## Usage quickstart
-First, install the package.
-1. cd openoj-judger
-2. pip3 install .
+First, setup the docker image and judger package.
+```shell
+chmod +x ./setup.sh
+./setup.sh
+```
 
 Then, you can import the package in your project like the following code.
 
