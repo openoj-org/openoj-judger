@@ -45,7 +45,7 @@ class Compiler:
     
     def _compile(self, cmd):
         try:
-            # docker ver. --------
+            # docker ver. ------------
             if self.use_docker:
                 client = docker.from_env()
                 volumes = {DEFAULT_TMP_PATH: {'bind': '/home', 'mode': 'rw'}}
@@ -53,7 +53,7 @@ class Compiler:
                     client.containers.run(IMAGE, cmd, volumes=volumes, remove=True)
                 except docker.errors.ContainerError as e:
                     return {'success': False, 'error_type': 'Compilation Error','error': e.stderr.decode('utf-8')}
-            # --------------------
+            # ------------------------
             # subprocess ver. --------
             else:
                 # docker_prefix = f"docker run -it -v {DEFAULT_TMP_PATH}:/home {IMAGE} "
