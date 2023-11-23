@@ -18,7 +18,7 @@ from judger.judger import judge
 
 data = {'language':'Python', 
     'src':'/Users/stian/Desktop/SE_OJ/Judger/src.py',  #Both absolute path of source file or exact file in the type of <bytes> are supported.
-    'max_cpu_time':10, #Timeout time, in seconds
+    'max_cpu_time':10, #Timeout time, in ms
     'max_memory':2*1024, #Max stack size, in KB
     'test_case_input':['/Users/stian/Desktop/SE_OJ/Judger/input.in'], # Must be list, it can be list of absolute path of files or exact files in the type of <bytes>.
     'test_case_output':['/Users/stian/Desktop/SE_OJ/Judger/output.out']} # Must be list, it can be list of absolute path of files or exact files in the type of <bytes>.
