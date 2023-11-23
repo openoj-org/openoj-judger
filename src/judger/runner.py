@@ -56,15 +56,20 @@ class Runner:
             #     out = client.containers.run(IMAGE, cmd, volumes=volumes, remove=True)
             # except docker.errors.ContainerError as e:
             #     return {'success': False, 'error_type': 'Docker Error','error': e.stderr.decode('utf-8')}
-            p = subprocess.run(f"./crunner {self.exe} {self.language} {self.case_id} {self.id} {self.timeout} {self.max_memory} {self.max_memory}")
-            with open(f'{DEFAULT_TMP_PATH}/{self.id}/answer_{self.case_id}.txt', 'r') as f:
+            
+            #Get the absolute path of this file (not include the file name)
+            path = os.path.dirname(os.path.abspath(__file__))
+            path = os.path.join(path, 'crunner')
+            p = subprocess.run(f"{path} {self.exe} {self.language} {self.case_id} {self.id} {self.timeout} {self.max_memory} {self.max_memory}".split())
+            self.logger.info(f'returncode: {p.returncode}')
+            with open(f'{DEFAULT_TMP_PATH}/{self.id}/answer_{self.case_id}.out', 'r') as f:
                 out = f.read()
             with open(f'{DEFAULT_TMP_PATH}/{self.id}/analysis_{self.case_id}.txt', 'r') as f:
                 analysis = f.read()
             
             # 4 lines in analysis, decompose them into 4 vars
             analysis = analysis.rstrip().split('\n')
-            status, cpu_time, time_usage, memory_usage = analysis[0], float(analysis[1]), float(analysis[2]), int(analysis[3])
+            status, time_usage, memory_usage = analysis[0], float(analysis[1]), int(analysis[2])
             if status != "OK":
                 return {'success': False, 'error_type': status, 'time_usage': time_usage, 'memory_usage': memory_usage}
         # subprocess ver.-----------------------------------------------------

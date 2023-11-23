@@ -36,6 +36,12 @@ int run_tests_with_limits(const char* exe, const char* language, const int case_
         printf("Cannot redirect stdout\n");
         return 1;
     }
-
-    execve(exe, NULL, NULL);
+    if(strcmp(language, "Python") == 0) {
+        // execl("python3", "python3", "main.py", (char *)NULL);
+        execlp("python3", "python3", exe, NULL);
+    }
+    else {
+        execve(exe, NULL, NULL);
+    }
+    return 0;
 }

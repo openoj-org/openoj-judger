@@ -88,15 +88,15 @@ int main(int argc, char *argv[]) {
             // Get the signal number
             const int signal = WTERMSIG(status);
             if(signal == SIGSEGV && memory_used > memory_limit) {
-                // printf("Memory limit exceeded\n");
+                printf("Memory limit exceeded\n");
                 fprintf(analysis_file, "MLE\n");
             }
             else if (signal == SIGKILL) {
-                // printf("Time limit exceeded\n");
+                printf("Time limit exceeded\n");
                 fprintf(analysis_file, "TLE\n");
             }
             else {
-                // printf("Runtime error\n");
+                printf("Runtime error\n");
                 fprintf(analysis_file, "RE\n");
             }
             fprintf(analysis_file, "%f\n", elapsed_time);
@@ -105,6 +105,7 @@ int main(int argc, char *argv[]) {
             return 0;
         }
         else {
+            printf("OK\n");
             fprintf(analysis_file, "OK\n");
             fprintf(analysis_file, "%f\n", elapsed_time);
             fprintf(analysis_file, "%d\n", memory_used);
