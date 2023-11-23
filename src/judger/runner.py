@@ -12,9 +12,9 @@ class Runner:
         self.language = language
         self.use_docker = use_docker
         if self.use_docker:
-            self.exe = os.path.join('/home', str(id), exe)
-            self.input = os.path.join('/home', str(id), f'test_{case_id}.in')
-            self.output = os.path.join('/home', str(id), f'test_{case_id}.out')
+            self.exe = os.path.join(DEFAULT_TMP_PATH, str(id), exe)
+            self.input = os.path.join(DEFAULT_TMP_PATH, str(id), f'test_{case_id}.in')
+            self.output = os.path.join(DEFAULT_TMP_PATH, str(id), f'test_{case_id}.out')
         else:
             self.exe = os.path.join(DEFAULT_TMP_PATH, str(id), exe)
             self.input = os.path.join(DEFAULT_TMP_PATH, str(id), f'test_{case_id}.in')
@@ -23,6 +23,9 @@ class Runner:
         self.max_memory = max_memory
         self.use_docker = use_docker
         self.logger = prepare_logger()
+
+        self.case_id = case_id
+        self.id = id
 
     def run(self):
         if self.language == 'C++' or self.language == 'C':
@@ -45,16 +48,26 @@ class Runner:
         return self._run(cmd)
 
     def _run(self, cmd):
-        if self.use_docker:
-            self.logger.info(f'Running {cmd} in docker')
-            try:
-                client = docker.from_env()
-                volumes = {DEFAULT_TMP_PATH: {'bind': '/home', 'mode': 'rw'}}
-                out = client.containers.run(IMAGE, cmd, volumes=volumes, remove=True)
-            except docker.errors.ContainerError as e:
-                return {'success': False, 'error_type': 'Docker Error','error': e.stderr.decode('utf-8')}
-
-        # subprocess ver.--------------------------------------
+        if not self.use_docker:
+            self.logger.info(f'Using the Crunner')
+            # try:
+            #     client = docker.from_env()
+            #     volumes = {DEFAULT_TMP_PATH: {'bind': '/home', 'mode': 'rw'}}
+            #     out = client.containers.run(IMAGE, cmd, volumes=volumes, remove=True)
+            # except docker.errors.ContainerError as e:
+            #     return {'success': False, 'error_type': 'Docker Error','error': e.stderr.decode('utf-8')}
+            p = subprocess.run(f"./crunner {self.exe} {self.language} {self.case_id} {self.id} {self.timeout} {self.max_memory} {self.max_memory}")
+            with open(f'{DEFAULT_TMP_PATH}/{self.id}/answer_{self.case_id}.txt', 'r') as f:
+                out = f.read()
+            with open(f'{DEFAULT_TMP_PATH}/{self.id}/analysis_{self.case_id}.txt', 'r') as f:
+                analysis = f.read()
+            
+            # 4 lines in analysis, decompose them into 4 vars
+            analysis = analysis.rstrip().split('\n')
+            status, cpu_time, time_usage, memory_usage = analysis[0], float(analysis[1]), float(analysis[2]), int(analysis[3])
+            if status != "OK":
+                return {'success': False, 'error_type': status, 'time_usage': time_usage, 'memory_usage': memory_usage}
+        # subprocess ver.-----------------------------------------------------
         else:
             self.logger.info(f'Running {cmd} in subprocess')
             docker_prefix = f"docker run -i -v {DEFAULT_TMP_PATH}:/home {IMAGE} "
@@ -74,10 +87,10 @@ class Runner:
         # -----------------------------------------------------
         
         user = hashlib.md5(out.rstrip().encode('utf-8')).hexdigest()
-        with open(os.path.join(DEFAULT_TMP_PATH, self.output), 'r') as f:
+        with open(self.output, 'r') as f:
             answer = hashlib.md5(f.read().rstrip().encode('utf-8')).hexdigest()
         
         if user != answer:
-            return {'success': False, 'error_type':'WA', 'error': 'Wrong Answer'}
+            return {'success': False, 'error_type':'WA', 'time_usage': time_usage, 'memory_usage': memory_usage}
         else:
-            return {'success': True}
+            return {'success': True, 'time_usage': time_usage, 'memory_usage': memory_usage}

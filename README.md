@@ -3,7 +3,9 @@
 A python package to simply judge your code.
 
 ## Usage quickstart
+
 First, setup the docker image and judger package.
+
 ```shell
 chmod +x ./setup.sh
 ./setup.sh
@@ -40,3 +42,13 @@ print(res)
 3. 并发效率
 4. 返回程序运行的 时间 和 内存 消耗
 5. 优化source code和test cases的传入效率
+
+
+修改方式
+
+1. 可以使用resource module限制栈内存、程序内存、对外部文件的访问、CPU time；需要一个外部的timer检测TLE；
+2. 一种方法是开一个process跑user程序，一个process跑timer，parent process捕捉两个subprocess，使用wait4获取user程序的资源消耗；
+
+最终修改方式：
+
+由于seccomp和resource等python module存在各种问题（seccomp module在import时需要绑定系统API，在本机上安装失败；使用resource可以有效地限制测试程序的运行资源，但是如果搭配os.run/subprocess.run等方法，难以记录测试程序运行时消耗的资源，并且调试只能在Linux平台，MacOS上难以调用各种resource的API，而课程服务器连接不稳定，难以在服务器调试；加上考虑到python实现测试程序在高并发场景下或许会存在效率问题（未测试）），最终决定沙箱采用Linux secure computing mode (seccomp)实现，使用C实现，并提供接口供Python编写的judger调用。

@@ -8,7 +8,7 @@ class TestMyModule(unittest.TestCase):
     def test_API_judge_Python(self):
         cwd = os.path.dirname(os.path.abspath(__file__))
         data = {'language':'Python', 
-                'src':os.path.join(cwd, 'data', 'src.py'), 'max_cpu_time':1, 'max_memory':1*1024,
+                'src':os.path.join(cwd, 'data', 'src.py'), 'max_cpu_time':10000, 'max_memory':10000,
                 'test_case_input':[os.path.join(cwd, 'data', 'input.in')],
                 'test_case_output':[os.path.join(cwd, 'data', 'output.out')],
                 'use_docker':False}
@@ -18,7 +18,7 @@ class TestMyModule(unittest.TestCase):
     def test_API_judge_Cpp(self):
         cwd = os.path.dirname(os.path.abspath(__file__))
         data = {'language':'C++', 
-                'src':os.path.join(cwd, 'data', 'src.cpp'), 'max_cpu_time':1, 'max_memory':1*1024,
+                'src':os.path.join(cwd, 'data', 'src.cpp'), 'max_cpu_time':10000, 'max_memory':10000,
                 'test_case_input':[os.path.join(cwd, 'data', 'input.in')],
                 'test_case_output':[os.path.join(cwd, 'data', 'output.out')],
                 'use_docker':False}
@@ -28,7 +28,7 @@ class TestMyModule(unittest.TestCase):
     def test_TLE(self):
         cwd = os.path.dirname(os.path.abspath(__file__))
         data = {'language':'C++', 
-                'src':os.path.join(cwd, 'data', 'src.cpp'), 'max_cpu_time':0.0001, 'max_memory':1*1024,
+                'src':os.path.join(cwd, 'data', 'src.cpp'), 'max_cpu_time':100, 'max_memory':10000,
                 'test_case_input':[os.path.join(cwd, 'data', 'input.in')],
                 'test_case_output':[os.path.join(cwd, 'data', 'output.out')],
                 'use_docker':False}
@@ -39,7 +39,7 @@ class TestMyModule(unittest.TestCase):
     def test_WA(self):
         cwd = os.path.dirname(os.path.abspath(__file__))
         data = {'language':'C++', 
-                'src':os.path.join(cwd, 'data', 'wa.cpp'), 'max_cpu_time':1, 'max_memory':1*1024,
+                'src':os.path.join(cwd, 'data', 'wa.cpp'), 'max_cpu_time':10000, 'max_memory':10000,
                 'test_case_input':[os.path.join(cwd, 'data', 'input.in')],
                 'test_case_output':[os.path.join(cwd, 'data', 'output.out')],
                 'use_docker':False}
@@ -50,7 +50,7 @@ class TestMyModule(unittest.TestCase):
     def test_MLE(self):
         cwd = os.path.dirname(os.path.abspath(__file__))
         data = {'language':'C++', 
-                'src':os.path.join(cwd, 'data', 'mle.cpp'), 'max_cpu_time':1, 'max_memory':10,
+                'src':os.path.join(cwd, 'data', 'mle.cpp'), 'max_cpu_time':10000, 'max_memory':100,
                 'test_case_input':[os.path.join(cwd, 'data', 'input.in')],
                 'test_case_output':[os.path.join(cwd, 'data', 'output.out')],
                 'use_docker':False}
