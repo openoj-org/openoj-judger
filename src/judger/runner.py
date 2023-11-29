@@ -67,16 +67,14 @@ class Runner:
     def _spj_run(self):
         with open(f'{DEFAULT_TMP_PATH}/{self.id}/answer_{self.case_id}.out', 'r') as f:
             out = f.read()
-        spj_result_path = os.path.join(DEFAULT_TMP_PATH, str(self.id), f'spj_result_{self.case_id}.txt')
         
-        p = subprocess.run(f"{self.spj_path} {f'{DEFAULT_TMP_PATH}/{self.id}/test_{self.case_id}.in'} {f'{DEFAULT_TMP_PATH}/{self.id}/answer_{self.case_id}.out'} {f'{DEFAULT_TMP_PATH}/{self.id}/test_{self.case_id}.out'} > {spj_result_path}")
+        p = subprocess.Popen(f"{self.spj_path} {f'{DEFAULT_TMP_PATH}/{self.id}/test_{self.case_id}.in'} {f'{DEFAULT_TMP_PATH}/{self.id}/answer_{self.case_id}.out'} {f'{DEFAULT_TMP_PATH}/{self.id}/test_{self.case_id}.out'}",
+                            stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
         # TODO check returncode p
-        with open(spj_result_path, 'r') as f:
-            spj_result = f.read()
-        flag = int(spj_result.rstrip().split()[0])
-        if flag == _ok:
+        flag = p.stdout.read().decode('utf-8').rstrip().split()[0]
+        if flag == 'ok':
             return {'success': True, 'time_usage': self.time_usage, 'memory_usage': self.memory_usage}
-        elif flag == _wa:
+        elif flag == 'wrong':
             return {'success': False, 'error_type':'WA', 'time_usage': self.time_usage, 'memory_usage': self.memory_usage}
         else:
             #TODO
