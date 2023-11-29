@@ -4,16 +4,13 @@ from .config import DEFAULT_TMP_PATH, IMAGE
 import docker
 
 class Compiler:
-    def __init__(self, src_path, language, id, use_docker=True):
-        self.language = language
-        if use_docker:
-            self.src_path = os.path.join('/home', str(id), src_path)
-            self.exe_path = os.path.join('/home', str(id), 'main')
-        else:
-            self.src_path = os.path.join(DEFAULT_TMP_PATH, str(id), src_path)
-            self.exe_path = os.path.join(DEFAULT_TMP_PATH, str(id), 'main')
+    def __init__(self, src_path, language, id, use_docker=True, is_spj=False):
+        self.language = language                               
+        self.src_path = os.path.join(DEFAULT_TMP_PATH, str(id), src_path)
+        self.exe_path = os.path.join(DEFAULT_TMP_PATH, str(id), 'main') if not is_spj else os.path.join(DEFAULT_TMP_PATH, str(id), 'spj')
         self.id = id
         self.use_docker = use_docker
+        self.absolute_dir_path = os.path.dirname(os.path.abspath(__file__))
 
     def compile(self):
         if self.language == 'C':
@@ -28,11 +25,11 @@ class Compiler:
             return False
     
     def compile_c(self):
-        cmd = 'gcc -o {} {} -Wall -lm -O2 -std=c99 -DONLINE_JUDGE'.format(self.exe_path, self.src_path)
+        cmd = 'gcc -o {} {} -Wall -lm -O2 -std=c99 -DONLINE_JUDGE -I{}'.format(self.exe_path, self.src_path, self.absolute_dir_path)
         return self._compile(cmd)
     
     def compile_cpp(self):
-        cmd = 'g++ -o {} {} -Wall -lm -O2 -std=c++11 -DONLINE_JUDGE'.format(self.exe_path, self.src_path)
+        cmd = 'g++ -o {} {} -Wall -lm -O2 -std=c++11 -DONLINE_JUDGE -I{}'.format(self.exe_path, self.src_path, self.absolute_dir_path)
         return self._compile(cmd)
     
     def compile_java(self):

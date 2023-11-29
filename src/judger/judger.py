@@ -51,12 +51,17 @@ def copy_test_cases(data, id):
     else:
         raise TypeError("data['test_case_input']and data['test_case_output'] should be a list")
 
+# class Data:
+    # def __init__(self, language, src, test_case_input, test_case_output, max_time, max_memory, use_spj, spj_language) -> None:
+        
+
 def judge(data):
     """
     :param data: dict
     language, src, max_cpu_time, max_memory, test_case_input, test_case_output
         - language: str, 'C', 'C++', 'Java', 'Python'
         - src: bytes(bytes of source code) or str(absolute path of source code)
+        - spj_src: bytes(bytes of source code) or str(absolute path of source code)
         - test_case_input: (list of) bytes(bytes of test case input) or str(absolute path of test case input)
         - test_case_output:(list of) bytes(bytes of test case output) or str(absolute path of test case output)
         - max_cpu_time: int, in ms
@@ -87,7 +92,7 @@ def judge(data):
     
     if data.get('use_spj', False):
         logger.info("Compiling spj source code...")
-        spj_compiler = Compiler(spj_file, data['spj_language'], id, data.get('use_docker', True))
+        spj_compiler = Compiler(spj_file, data['spj_language'], id, data.get('use_docker', True), is_spj=True)
         spj_result = spj_compiler.compile()
         logger.info(spj_result)
         if spj_result['success'] == False:

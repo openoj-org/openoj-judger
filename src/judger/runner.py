@@ -65,13 +65,11 @@ class Runner:
             return {'success': True, 'time_usage': self.time_usage, 'memory_usage': self.memory_usage}
 
     def _spj_run(self):
-        with open(f'{DEFAULT_TMP_PATH}/{self.id}/answer_{self.case_id}.out', 'r') as f:
-            out = f.read()
-        
         p = subprocess.Popen(f"{self.spj_path} {f'{DEFAULT_TMP_PATH}/{self.id}/test_{self.case_id}.in'} {f'{DEFAULT_TMP_PATH}/{self.id}/answer_{self.case_id}.out'} {f'{DEFAULT_TMP_PATH}/{self.id}/test_{self.case_id}.out'}",
                             stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-        # TODO check returncode p
-        flag = p.stdout.read().decode('utf-8').rstrip().split()[0]
+
+        out, err = p.communicate()
+        flag = err.decode('utf-8').rstrip().split()[0]
         if flag == 'ok':
             return {'success': True, 'time_usage': self.time_usage, 'memory_usage': self.memory_usage}
         elif flag == 'wrong':
@@ -79,5 +77,3 @@ class Runner:
         else:
             #TODO
             pass
-        
-        
