@@ -35,6 +35,14 @@ print(res)
 
 ## API (TODO)
 
+## Run tests
+
+In the directory `src`, run
+
+`python3 -m unittest judger.tests.test_e2e`
+
+`python3 -m unittest judger.tests.test_spj`
+
 ## Bugs to fix
 
 1. 目前采用Linux seccomp ulimit对stack size进行限制；但这样系统会将MLE处理成访问非法地址Segmentation Error，无法将MLE与Runtime Error进行区分了。
@@ -45,6 +53,7 @@ print(res)
 6. Unknown Error
 7. Spj
 8. FLASK ~ backend
+9. Add a class, as a template of data input for judger. Only contains data fields.
 
 修改方式
 
