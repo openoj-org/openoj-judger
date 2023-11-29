@@ -1,6 +1,6 @@
 # Makefile
 
-CC = clang
+CC = gcc
 CFLAGS = -Wall -Wextra -g
 
 # List of source files
