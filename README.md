@@ -45,15 +45,18 @@ In the directory `src`, run
 
 ## Bugs to fix
 
-1. 目前采用Linux seccomp ulimit对stack size进行限制；但这样系统会将MLE处理成访问非法地址Segmentation Error，无法将MLE与Runtime Error进行区分了。
-2. 在docker环境中使用unlimit 和 timeout存在未知错误，无法正常执行run script
-3. 并发效率
-4. 返回程序运行的 时间 和 内存 消耗
-5. 优化source code和test cases的传入效率
-6. Unknown Error
-7. Spj
-8. FLASK ~ backend
-9. Add a class, as a template of data input for judger. Only contains data fields.
+* [X] 目前采用Linux seccomp ulimit对stack size进行限制；但这样系统会将MLE处理成访问非法地址Segmentation Error，无法将MLE与Runtime Error进行区分了。
+* [X] 在docker环境中使用unlimit 和 timeout存在未知错误，无法正常执行run script
+* [ ] 并发效率
+* [X] 返回程序运行的 时间 和 内存 消耗
+* [ ] 优化source code和test cases的传入效率
+* [ ] Unknown Error
+* [X] Spj
+* [ ] FLASK ~ backend (input API)
+* [ ] Add a class, as a template of data input for judger. Only contains data fields. (Optional)
+* [ ] Test on Linux platform
+* [ ] Restrict the directory that the user exe can visit
+* [ ] A script that compile the package (C part) and install necessary packages
 
 修改方式
 
