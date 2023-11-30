@@ -7,10 +7,12 @@ ojTrash
 __pycache__/
 *.py[cod]
 *$py.class
-
+*.o
+src/judger/crunner.o
+src/judger/crunner
+src/judger/util.o
 # C extensions
 *.so
-
 # Distribution / packaging
 .Python
 build/
