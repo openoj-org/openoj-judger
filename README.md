@@ -56,7 +56,11 @@ In the directory `src`, run
 * [ ] Add a class, as a template of data input for judger. Only contains data fields. (Optional)
 * [ ] Test on Linux platform
 * [ ] Restrict the directory that the user exe can visit
-* [ ] A script that compile the package (C part) and install necessary packages
+  尝试了几种方法。
+  第一种：使用chroot + execvl，好处是都是基础的linux syscall，但是问题在于chroot后，新的root下连bash都没有；即使把bash复制过来，也需要把所有的动态链接库都复制过来；
+  第二种：使用SELinux，编写一个policy来限制资源访问；不过在服务器上安装失败；
+  第三种：使用seccomp，编写一个policy，
+* [X] A script that compile the package (C part) and install necessary packages
 
 修改方式
 
