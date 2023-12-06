@@ -52,14 +52,15 @@ In the directory `src`, run
 * [ ] 优化source code和test cases的传入效率
 * [ ] Unknown Error
 * [X] Spj
-* [ ] FLASK ~ backend (input API)
-* [ ] Add a class, as a template of data input for judger. Only contains data fields. (Optional)
+* [X] FLASK ~ backend (input API)
 * [ ] Test on Linux platform
+  * [ ] 问题1：wait4返回的资源消耗与valgrinder检测到的不一样，后者大20倍
+  * [ ] 问题2：当内存限制从小到大，依次出现cannot open input file, bad acclocate, AC
 * [ ] Restrict the directory that the user exe can visit
   尝试了几种方法。
-  第一种：使用chroot + execvl，好处是都是基础的linux syscall，但是问题在于chroot后，新的root下连bash都没有；即使把bash复制过来，也需要把所有的动态链接库都复制过来；
-  第二种：使用SELinux，编写一个policy来限制资源访问；不过在服务器上安装失败；
-  第三种：使用seccomp，编写一个policy，
+  第一种：使用chroot + execvl，好处是都是基础的linux syscall，但是问题在于chroot后，新的root下连bash都没有；即使把bash复制过来，也需要把所有的动态链接库都复制过来，这样需要用到Linux Namespace，类似于docker的实现思路；
+  第二种：使用SELinux，编写一个policy来限制资源访问；不过在服务器上安装失败；(后来发现是Ubuntu不支持SELinux，需要使用AppArmor)
+  第三种：使用seccomp，编写一个policy；这是最终选取的方式，不过存在问题，在子进程中限制write后，父进程中的write也被限制了，无法为子进程重定向标准输出到answer.out中。
 * [X] A script that compile the package (C part) and install necessary packages
 
 修改方式
