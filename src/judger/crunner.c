@@ -26,12 +26,19 @@ int main(int argc, char *argv[]) {
     // Fork 
     pid_t pid = fork();
     if (pid == -1) {
-        printf("Fork failed\n");
+        perror("Fork failed\n");
         return 1;
     }
 
     if (pid == 0) {
         // Child process
+        // Load seccomp policy
+        #ifdef __linux__
+        if (load_seccomp_policy() != 0) {
+            perror("Failed to load seccomp policy\n");
+            return 1;
+        }
+        #endif
         run_tests_with_limits(exe, language, case_id, id, time_limit, memory_limit, stack_memory_limit); //TODO
     }
     else {

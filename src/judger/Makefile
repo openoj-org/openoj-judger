@@ -2,6 +2,11 @@
 
 CC = gcc
 CFLAGS = -Wall -Wextra -g
+ifeq ($(shell uname -s),Linux)
+    LDFLAGS = -lseccomp
+else
+    LDFLAGS =
+endif
 
 # List of source files
 SRCS = util.c crunner.c
@@ -15,7 +20,7 @@ TARGET = crunner
 all: $(TARGET)
 
 $(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(TARGET)
+	$(CC) -o $(TARGET) $(OBJS) $(CFLAGS) $(LDFLAGS)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
