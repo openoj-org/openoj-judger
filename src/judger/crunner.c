@@ -75,7 +75,7 @@ int main(int argc, char *argv[]) {
 
         const double cpu_time_used = usage.ru_utime.tv_sec * 1000 + usage.ru_utime.tv_usec / 1000; // in ms
         elapsed_time = (end_time.tv_sec - start_time.tv_sec) * 1000 +(end_time.tv_usec - start_time.tv_usec) / 1000;
-        const int memory_used = usage.ru_maxrss / 1000; // in KB
+        const int memory_used = usage.ru_maxrss; // in KB
         
         printf("CPU Time used: %f ms\n", cpu_time_used);
         printf("Real Time used: %f ms\n", elapsed_time);
