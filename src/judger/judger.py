@@ -132,7 +132,7 @@ def judge(data):
         #TODO memory list
         runner = Runner(exe_path, data['language'], idx, id, data['max_time'], data['max_memory'], data.get('use_docker', False), data.get('use_spj', False), spj_exe_path)
         result = runner.run()
-        results[idx] = result
+        results[str(idx)] = result
         if result['success']:
             score += test_case_score[idx]
         else:
@@ -157,7 +157,7 @@ def judge_entrance(data):
             subtask_data['test_case_input'] = data['test_case_input'][idx]
             subtask_data['test_case_output'] = data['test_case_output'][idx]
             result = judge(subtask_data)
-            results[idx] = result
+            results[str(idx)] = result
             if result['success']:
                 score += subtask_scores[idx]
             else:

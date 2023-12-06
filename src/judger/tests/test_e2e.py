@@ -37,7 +37,7 @@ class TestMyModule(unittest.TestCase):
                 'use_docker':False}
         result = judge(data)
         self.assertEqual(result['success'], False)
-        self.assertEqual(result[0]['error_type'], 'TLE')
+        self.assertEqual(result['0']['error_type'], 'TLE')
 
     def test_WA(self):
         print("test_WA")
@@ -49,7 +49,7 @@ class TestMyModule(unittest.TestCase):
                 'use_docker':False}
         result = judge(data)
         self.assertEqual(result['success'], False)
-        self.assertEqual(result[0]['error_type'], 'WA')
+        self.assertEqual(result['0']['error_type'], 'WA')
 
     def test_MLE(self):
         print("test_MLE")
@@ -61,7 +61,7 @@ class TestMyModule(unittest.TestCase):
                 'use_docker':False}
         result = judge(data)
         self.assertEqual(result['success'], False)
-        self.assertEqual(result[0]['error_type'], 'MLE')
+        self.assertEqual(result['0']['error_type'], 'MLE')
 
     def test_binary(self):
         print("test_binary")

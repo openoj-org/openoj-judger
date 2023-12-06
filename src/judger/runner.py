@@ -42,7 +42,7 @@ class Runner:
                 analysis = f.read()
             # 3 lines in analysis, decompose them into 3 vars
             analysis = analysis.rstrip().split('\n')
-            self.status, self.time_usage, self.memory_usage = analysis[0], float(analysis[1]), int(analysis[2])
+            self.status, self.time_usage, self.memory_usage = analysis[0], int(float(analysis[1])), int(analysis[2])
             if self.status != "OK":
                 return {'success': False, 'error_type': self.status, 'time_usage': self.time_usage, 'memory_usage': self.memory_usage}
 
