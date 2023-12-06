@@ -2,6 +2,7 @@ import random
 import os
 import shutil
 import base64
+import copy
 from .config import *
 from .compiler import Compiler
 from .runner import Runner
@@ -144,3 +145,25 @@ def judge(data):
     return results
 
 
+def judge_entrance(data):
+    if isinstance(data['test_case_input'][0], list):
+        subtask_scores = data['test_case_score']
+        score = 0
+        results = {}
+        success = True
+        num_subtasks = len(data['test_case_input'])
+        for idx in range(num_subtasks):
+            subtask_data = copy.deepcopy(data)
+            subtask_data['test_case_input'] = data['test_case_input'][idx]
+            subtask_data['test_case_output'] = data['test_case_output'][idx]
+            result = judge(subtask_data)
+            results[idx] = result
+            if result['success']:
+                score += subtask_scores[idx]
+            else:
+                success = False
+        results['score'] = score
+        results['success'] = success
+        return results
+    else:
+        return judge(data)
