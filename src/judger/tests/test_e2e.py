@@ -37,7 +37,7 @@ class TestMyModule(unittest.TestCase):
                 'use_docker':False}
         result = judge(data)
         self.assertEqual(result['success'], False)
-        self.assertEqual(result['error_type'], 'TLE')
+        self.assertEqual(result[0]['error_type'], 'TLE')
 
     def test_WA(self):
         print("test_WA")
@@ -49,7 +49,7 @@ class TestMyModule(unittest.TestCase):
                 'use_docker':False}
         result = judge(data)
         self.assertEqual(result['success'], False)
-        self.assertEqual(result['error_type'], 'WA')
+        self.assertEqual(result[0]['error_type'], 'WA')
 
     def test_MLE(self):
         print("test_MLE")
@@ -61,7 +61,26 @@ class TestMyModule(unittest.TestCase):
                 'use_docker':False}
         result = judge(data)
         self.assertEqual(result['success'], False)
-        self.assertEqual(result['error_type'], 'MLE')
+        self.assertEqual(result[0]['error_type'], 'MLE')
+
+    def test_binary(self):
+        print("test_binary")
+        cwd = os.path.dirname(os.path.abspath(__file__))
+        import base64
+        with open(os.path.join(cwd, 'data', 'src.cpp'), 'rb') as f:
+            src = base64.b64encode(f.read()).decode()
+        with open(os.path.join(cwd, 'data', 'input.in'), 'rb') as f:
+            input = base64.b64encode(f.read()).decode()
+        with open(os.path.join(cwd, 'data', 'output.out'), 'rb') as f:
+            output = base64.b64encode(f.read()).decode()
+        data = {'language':'C++', 
+                'src':src, 'max_time':10000, 'max_memory':10000,
+                'test_case_input':[input],
+                'test_case_output':[output],
+                'test_case_score':[100]}
+        result = judge(data)
+        self.assertEqual(result['success'], True)
+        self.assertEqual(result['score'], 100)
     
 if __name__ == '__main__':
     unittest.main()
