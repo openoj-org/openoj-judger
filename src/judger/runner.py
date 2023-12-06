@@ -8,7 +8,7 @@ from .config import DEFAULT_TMP_PATH, IMAGE, _ok, _wa
 from .util import prepare_logger
 
 class Runner:
-    def __init__(self, exe, language, case_id, id, timeout=10, max_memory=1024*1024*128, use_docker=True, use_spj=False, spj_path=None) -> None:
+    def __init__(self, exe, language, case_id, id, timeout=10, max_memory=1024*1024*128, use_docker=False, use_spj=False, spj_path=None) -> None:
         self.language = language
         self.use_docker = use_docker
         self.exe = os.path.join(DEFAULT_TMP_PATH, str(id), exe)

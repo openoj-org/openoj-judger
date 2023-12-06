@@ -58,14 +58,14 @@ def copy_test_cases(data, id):
 def judge(data):
     """
     :param data: dict
-    language, src, max_cpu_time, max_memory, test_case_input, test_case_output
+    language, src, max_time, max_memory, test_case_input, test_case_output
         - language: str, 'C', 'C++', 'Java', 'Python'
         - src: bytes(bytes of source code) or str(absolute path of source code)
         - spj_src: bytes(bytes of source code) or str(absolute path of source code)
         - test_case_input: (list of) bytes(bytes of test case input) or str(absolute path of test case input)
         - test_case_output:(list of) bytes(bytes of test case output) or str(absolute path of test case output)
-        - max_cpu_time: int, in ms
-        - max_memory: int, in Byte
+        - max_time: int, in ms
+        - max_memory: int, in KB
     :return: dict
     """
     #mkdir
@@ -82,7 +82,7 @@ def judge(data):
 
     #compile
     logger.info("Compiling user source code...")
-    compiler = Compiler(src_file, data['language'], id, data.get('use_docker', True))
+    compiler = Compiler(src_file, data['language'], id, data.get('use_docker', False))
     result = compiler.compile()
     logger.info(result)
     if result['success'] == False:
@@ -92,7 +92,7 @@ def judge(data):
     
     if data.get('use_spj', False):
         logger.info("Compiling spj source code...")
-        spj_compiler = Compiler(spj_file, data['spj_language'], id, data.get('use_docker', True), is_spj=True)
+        spj_compiler = Compiler(spj_file, data['spj_language'], id, data.get('use_docker', False), is_spj=True)
         spj_result = spj_compiler.compile()
         logger.info(spj_result)
         if spj_result['success'] == False:
@@ -105,7 +105,7 @@ def judge(data):
     #run
     logger.info("Running...")
     for idx in range(len(data['test_case_input'])):
-        runner = Runner(exe_path, data['language'], idx, id, data['max_cpu_time'], data['max_memory'], data.get('use_docker', True), data.get('use_spj', False), spj_exe_path)
+        runner = Runner(exe_path, data['language'], idx, id, data['max_time'], data['max_memory'], data.get('use_docker', False), data.get('use_spj', False), spj_exe_path)
         result = runner.run()
         if not result['success']:
             result['error_case'] = idx

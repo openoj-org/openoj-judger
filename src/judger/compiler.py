@@ -4,7 +4,7 @@ from .config import DEFAULT_TMP_PATH, IMAGE
 import docker
 
 class Compiler:
-    def __init__(self, src_path, language, id, use_docker=True, is_spj=False):
+    def __init__(self, src_path, language, id, use_docker=False, is_spj=False):
         self.language = language                               
         self.src_path = os.path.join(DEFAULT_TMP_PATH, str(id), src_path)
         self.exe_path = os.path.join(DEFAULT_TMP_PATH, str(id), 'main') if not is_spj else os.path.join(DEFAULT_TMP_PATH, str(id), 'spj')
