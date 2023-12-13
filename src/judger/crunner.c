@@ -90,11 +90,17 @@ int main(int argc, char *argv[]) {
             return 1;
         }
         // fprintf(analysis_file, "%f\n", cpu_time_used);
+        printf("Exit code is %d\n", WEXITSTATUS(status));
+        printf("Exit signal is %d\n", WTERMSIG(status));
 
         if (WIFSIGNALED(status)) {
             // Get the signal number
             const int signal = WTERMSIG(status);
             if(signal == SIGSEGV && memory_used > memory_limit) {
+                printf("Memory limit exceeded\n");
+                fprintf(analysis_file, "MLE\n");
+            }
+            else if(WEXITSTATUS(status) == 127 || signal == SIGSYS) {
                 printf("Memory limit exceeded\n");
                 fprintf(analysis_file, "MLE\n");
             }
@@ -112,11 +118,20 @@ int main(int argc, char *argv[]) {
             return 0;
         }
         else {
-            printf("OK\n");
-            fprintf(analysis_file, "OK\n");
-            fprintf(analysis_file, "%f\n", elapsed_time);
-            fprintf(analysis_file, "%d\n", memory_used);
-            fclose(analysis_file);
+            if(WEXITSTATUS(status) == 127) {
+                printf("Memory limit exceeded\n");
+                fprintf(analysis_file, "MLE\n");
+                fprintf(analysis_file, "%f\n", elapsed_time);
+                fprintf(analysis_file, "%d\n", memory_used);
+                fclose(analysis_file);
+            }
+            else {
+                printf("OK\n");
+                fprintf(analysis_file, "OK\n");
+                fprintf(analysis_file, "%f\n", elapsed_time);
+                fprintf(analysis_file, "%d\n", memory_used);
+                fclose(analysis_file);
+            }
             return 0;
         }
     }
