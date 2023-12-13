@@ -35,6 +35,28 @@ print(res)
 
 ## API (TODO)
 
+return structure
+
+多个测试点(Multiple test cases)
+
+success：bool, If all test cases are passed, return True; otherwise False;
+
+score: total score obtained;
+
+"i" : ith test case result, including "memory_usage", "success", "time_usage"
+
+Example: {"0":{"memory_usage":1196032,"success":true,"time_usage":1566},"score":100,"success":true}
+
+多个子任务 (Multiple subtasks)
+
+success：bool, If all subtasks are passed, return True; otherwise False;
+
+score: total score obtained;
+
+"i" : ith subtask result, the same to the multiple test cases result, excluding "score".
+
+Example: {'0': {'0': {'success': True, 'time_usage': 700, 'memory_usage': 1196032}, 'success': True}, '1': {'0': {'success': True, 'time_usage': 240, 'memory_usage': 1196032}, 'success': True}, 'score': 100, 'success': True}
+
 ## Run tests
 
 In the directory `src`, run
