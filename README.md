@@ -33,6 +33,12 @@ print(res)
 # >>> {'success': False, 'error_type': 'TLE', 'error': detailed error message from stderr...}
 ```
 
+## Start the service
+
+`celery -A app.celery worker --loglevel=info`
+
+`flask run`
+
 ## API (TODO)
 
 return structure
