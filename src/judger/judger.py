@@ -74,14 +74,16 @@ def copy_test_cases(data, id):
 def judge(data):
     """
     :param data: dict
-    language, src, max_time, max_memory, test_case_input, test_case_output
+    language, src, max_time, max_memory, test_case_input, test_case_output, test_case_score, use_spj, spj_language, spj_src
         - language: str, 'C', 'C++', 'Java', 'Python'
         - src: bytes(bytes of source code) or str(absolute path of source code)
-        - spj_src: bytes(bytes of source code) or str(absolute path of source code)
         - test_case_input: (list of) bytes(bytes of test case input) or str(absolute path of test case input)
         - test_case_output:(list of) bytes(bytes of test case output) or str(absolute path of test case output)
         - max_time: int, in ms
         - max_memory: int, in KB
+        - use_spj: bool
+        - spj_language: str, 'C', 'C++' (Currently only support these two)
+        - spj_src: bytes(bytes of source code) or str(absolute path of source code)
     :return: dict
     """
     #mkdir
@@ -157,6 +159,7 @@ def judge_entrance(data):
             subtask_data['test_case_input'] = data['test_case_input'][idx]
             subtask_data['test_case_output'] = data['test_case_output'][idx]
             result = judge(subtask_data)
+            result.pop('score')
             results[str(idx)] = result
             if result['success']:
                 score += subtask_scores[idx]

@@ -6,7 +6,7 @@ app = Flask(__name__)
 def judger():
     try:
         json_data = request.get_json()
-        result = judge(json_data)
+        result = judge_entrance(json_data)
         return jsonify(result)
     
     except Exception as e:
