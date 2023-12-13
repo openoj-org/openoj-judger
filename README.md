@@ -54,9 +54,9 @@ In the directory `src`, run
 * [X] Spj
 * [X] FLASK ~ backend (input API)
 * [ ] Test on Linux platform
-  * [ ] 问题1：wait4返回的资源消耗与valgrinder检测到的不一样，后者大20倍
+  * [ ] 问题1：wait4返回的资源消耗与valgrinder检测到的不一样，后者大20倍 (有可能是中途异常退出的情况下，两个方法的处理方法不同；尝试一下success的测例的情况)
   * [ ] 问题2：当内存限制从小到大，依次出现cannot open input file, bad acclocate, AC
-* [ ] Restrict the directory that the user exe can visit
+* [X] Restrict the directory that the user exe can visit (128MB)
   尝试了几种方法。
   第一种：使用chroot + execvl，好处是都是基础的linux syscall，但是问题在于chroot后，新的root下连bash都没有；即使把bash复制过来，也需要把所有的动态链接库都复制过来，这样需要用到Linux Namespace，类似于docker的实现思路；
   第二种：使用SELinux，编写一个policy来限制资源访问；不过在服务器上安装失败；(后来发现是Ubuntu不支持SELinux，需要使用AppArmor)
