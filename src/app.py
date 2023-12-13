@@ -1,16 +1,38 @@
 from flask import Flask, request, jsonify
-from judger.judger import judge_entrance, judge
+from celery import Celery
+from judger.judger import judge_entrance
+
 app = Flask(__name__)
 
-@app.route('/judger', methods=['POST'])
-def judger():
-    try:
-        json_data = request.get_json()
-        result = judge_entrance(json_data)
-        return jsonify(result)
-    
-    except Exception as e:
-        return jsonify({'[/judger]:error': str(e)})
+app.config['CELERY_BROKER_URL'] = 'redis://localhost:6379/0'
+app.config['CELERY_RESULT_BACKEND'] = 'redis://localhost:6379/0'
+
+celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
+celery.conf.update(app.config)
+
+@celery.task
+def judge_code(data):
+    result = judge_entrance(data)
+    return result
+
+@app.route('/submit_code', methods=['POST'])
+def submit_code():
+    data = request.get_json()
+
+    task = judge_code.apply_async(args=[data])
+
+    return jsonify({'task_id': task.id}), 202
+
+@app.route('/get_result/<task_id>', methods=['GET'])
+def get_result(task_id):
+    task = judge_code.AsyncResult(task_id)
+
+    if task.state == 'SUCCESS':
+        result = task.result
+    else:
+        result = 'Task still pending or failed'
+
+    return jsonify(result)
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
