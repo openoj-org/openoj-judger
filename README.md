@@ -49,7 +49,7 @@ success：bool, If all test cases are passed, return True; otherwise False;
 
 score: total score obtained;
 
-"i" : ith test case result, including "memory_usage", "success", "time_usage"
+"i" : ith test case result, including "memory_usage", "success", "time_usage", "error_type"
 
 Example: {"0":{"memory_usage":1196032,"success":true,"time_usage":1566},"score":100,"success":true}
 

@@ -1,6 +1,6 @@
 DEFAULT_TMP_PATH = "/tmp" # This is used to store temporary files, like user's code, test cases, etc.
 IMAGE = "oj"
-suffix = {'C':'.c', 'C++':'.cpp', 'Java':'.java', 'Python':'.py'}
+suffix = {'C':'.c', 'C++':'.cpp', 'Java':'.java', 'Python':'.py', 'Python3':'.py', 'C++11':'.cpp'}
 
 _ok = 0,
 _wa = 1,

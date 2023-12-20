@@ -77,7 +77,7 @@ int run_tests_with_limits(const char* exe, const char* language, const int case_
         return 1;
     }
     #endif
-    if(strcmp(language, "Python") == 0) {
+    if((strcmp(language, "Python") == 0) || (strcmp(language, "Python3") == 0)) {
         // execl("python3", "python3", "main.py", (char *)NULL);
         execlp("python3", "python3", exe, NULL);
     }

@@ -15,11 +15,11 @@ class Compiler:
     def compile(self):
         if self.language == 'C':
             return self.compile_c()
-        elif self.language == 'C++':
+        elif (self.language == 'C++') or (self.language == 'C++11'):
             return self.compile_cpp()
         elif self.language == 'Java':
             return self.compile_java()
-        elif self.language == 'Python':
+        elif (self.language == 'Python') or (self.language == 'Python3'):
             return self.compile_python()
         else:
             return False
@@ -60,11 +60,11 @@ class Compiler:
                     return {'success':False, 'error':err.decode('utf-8'), 'error_type':"Compilation Error"}
             # ------------------------
                
-            if self.language == 'C' or self.language == 'C++':
+            if self.language == 'C' or self.language == 'C++' or self.language == 'C++11':
                 return {'success':True, 'exe_path':self.exe_path.split('/')[-1]}
             elif self.language == 'Java':
                 pass #TODO
-            elif self.language == 'Python':
+            elif (self.language == 'Python') or (self.language == 'Python3'):
                 pwd = os.getcwd()
                 os.chdir(os.path.join(DEFAULT_TMP_PATH, str(self.id)))
                 if os.path.exists('__pycache__') and os.path.isdir('__pycache__'):
