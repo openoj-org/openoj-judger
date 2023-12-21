@@ -4,7 +4,7 @@ A python package to simply judge your code.
 
 ## Usage quickstart
 
-First, setup the docker image and judger package.
+First, use the setup.sh script to compile the judger.
 
 ```shell
 chmod +x ./setup.sh
