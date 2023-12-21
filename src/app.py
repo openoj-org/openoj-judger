@@ -13,6 +13,7 @@ celery.conf.update(app.config)
 @celery.task
 def judge_code(data):
     result = judge_entrance(data)
+    print(result)
     return result
 
 @app.route('/submit_code', methods=['POST'])
@@ -21,7 +22,8 @@ def submit_code():
 
     task = judge_code.apply_async(args=[data])
 
-    return jsonify({'task_id': task.id}), 202
+    # return jsonify({'task_id': task.id}), 202
+    return {'id':task.id}
 
 @app.route('/get_result/<task_id>', methods=['GET'])
 def get_result(task_id):
@@ -30,9 +32,10 @@ def get_result(task_id):
     if task.state == 'SUCCESS':
         result = task.result
     else:
-        result = 'Task still pending or failed'
+        result = {'ok': False}
 
     return jsonify(result)
+    # return result
 
 if __name__ == '__main__':
     app.run(debug=True)

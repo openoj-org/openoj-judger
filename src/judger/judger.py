@@ -137,13 +137,16 @@ def judge(data):
         results[str(idx)] = result
         if result['success']:
             score += test_case_score[idx]
+            result['score'] = test_case_score[idx]
         else:
             success = False
+            result['score'] = 0
         
     results['score'] = score
     results['success'] = success
     #clean
     shutil.rmtree(dir)
+    results['ok'] = True
     return results
 
 
@@ -163,10 +166,13 @@ def judge_entrance(data):
             results[str(idx)] = result
             if result['success']:
                 score += subtask_scores[idx]
+                result['score'] = subtask_scores[idx]
             else:
                 success = False
+                result['score'] = 0
         results['score'] = score
         results['success'] = success
+        results['ok'] = True
         return results
     else:
         return judge(data)
