@@ -51,6 +51,20 @@ class TestMyModule(unittest.TestCase):
         self.assertEqual(result['success'], False)
         self.assertEqual(result['0']['error_type'], 'WA')
 
+    def test_CE(self):
+        print("test_CE")
+        cwd = os.path.dirname(os.path.abspath(__file__))
+        data = {'language':'C++',
+                'src':os.path.join(cwd, 'data', 'ce.cpp'), 'max_time':10000, 'max_memory':10000,
+                'test_case_input':[os.path.join(cwd, 'data', 'input.in')],
+                'test_case_output':[os.path.join(cwd, 'data', 'output.out')],
+                'use_docker':False}
+        result = judge(data)
+        self.assertEqual(result['success'], False)
+        self.assertEqual(result['0']['error_type'], 'CE')
+
+
+
     def test_binary(self):
         print("test_binary")
         cwd = os.path.dirname(os.path.abspath(__file__))
@@ -88,6 +102,9 @@ class TestMyModule(unittest.TestCase):
         result = judge_entrance(data)
         self.assertEqual(result['success'], True)
         self.assertEqual(result['score'], 100)
+
+    
+
     
 if __name__ == '__main__':
     unittest.main()

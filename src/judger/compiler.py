@@ -57,7 +57,8 @@ class Compiler:
                 p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 out, err = p.communicate()
                 if p.returncode != 0:
-                    return {'success':False, 'error':err.decode('utf-8'), 'error_type':"Compilation Error"}
+                    # return {'success':False, 'error':err.decode('utf-8'), 'error_type':"CE"}
+                    return {'success':False, 'error_type':"CE"}
             # ------------------------
                
             if self.language == 'C' or self.language == 'C++' or self.language == 'C++11':

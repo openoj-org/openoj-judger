@@ -104,6 +104,11 @@ def judge(data):
     result = compiler.compile()
     logger.info(result)
     if result['success'] == False:
+        result['score'] = 0
+        for case_idx in range(len(data['test_case_input'])):
+            result[str(case_idx)] = {'success': False, 'score': 0, 'memory_usage':0, 'time_usage':0, 'error_type': 'CE'}
+        result['ok'] = True
+        result.pop('error_type')
         return result
     else:
         exe_path = result['exe_path'] # main
