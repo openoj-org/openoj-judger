@@ -48,7 +48,7 @@ class Compiler:
             if self.language == 'C' or self.language == 'C++' or self.language == 'C++11':
                 return {'success':True, 'exe_path':self.exe_path.split('/')[-1]}
             elif self.language == 'Java':
-                pass #TODO
+                return {'success':False, 'error_type':"CE"} # Current not support Java
             elif (self.language == 'Python') or (self.language == 'Python3'):
                 pwd = os.getcwd()
                 os.chdir(os.path.join(DEFAULT_TMP_PATH, str(self.id)))

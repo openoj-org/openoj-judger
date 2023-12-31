@@ -38,7 +38,7 @@ int load_seccomp_policy() {
 int run_tests_with_limits(const char* exe, const char* language, const int case_id, const int id, const int time_limit, const int memory_limit, const int stack_memory_limit) {
     // Set the resource limits
     struct rlimit memory_limit_rlim;
-    memory_limit_rlim.rlim_cur = memory_limit * 1024;//TODO notice the unit
+    memory_limit_rlim.rlim_cur = memory_limit * 1024;
     memory_limit_rlim.rlim_max = memory_limit * 1024;
     setrlimit(RLIMIT_AS, &memory_limit_rlim);
 
@@ -47,7 +47,6 @@ int run_tests_with_limits(const char* exe, const char* language, const int case_
     stack_memory_limit_rlim.rlim_max = stack_memory_limit * 1024;
     setrlimit(RLIMIT_STACK, &stack_memory_limit_rlim);
 
-    //TODO set the redirect file here, add 2 input parameters
     char input_file_name[50];
     sprintf(input_file_name, "/tmp/%d/test_%d.in", id, case_id);
     char output_file_name[50];
