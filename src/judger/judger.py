@@ -136,7 +136,6 @@ def judge(data):
     else:
         test_case_score = [0] * (num_test_cases - 1) + [100]
     for idx in range(num_test_cases):
-        #TODO memory list
         runner = Runner(exe_path, data['language'], idx, id, data['max_time'], data['max_memory'], data.get('use_spj', False), spj_exe_path)
         result = runner.run()
         results[str(idx)] = result
