@@ -3,21 +3,18 @@ import subprocess
 import time
 import threading
 import hashlib
-import docker
 from .config import DEFAULT_TMP_PATH, IMAGE, _ok, _wa
 from .util import prepare_logger
 
 class Runner:
-    def __init__(self, exe, language, case_id, id, timeout=10, max_memory=1024*1024*128, use_docker=False, use_spj=False, spj_path=None) -> None:
+    def __init__(self, exe, language, case_id, id, timeout=10, max_memory=1024*1024*128, use_spj=False, spj_path=None) -> None:
         self.language = language
-        self.use_docker = use_docker
         self.exe = os.path.join(DEFAULT_TMP_PATH, str(id), exe)
         self.input = os.path.join(DEFAULT_TMP_PATH, str(id), f'test_{case_id}.in')
         self.output = os.path.join(DEFAULT_TMP_PATH, str(id), f'test_{case_id}.out')
 
         self.timeout = timeout
         self.max_memory = max_memory
-        self.use_docker = use_docker
         self.logger = prepare_logger()
 
         self.case_id = case_id
@@ -30,26 +27,25 @@ class Runner:
         self.status, self.time_usage, self.memory_usage = None, None, None
 
     def run(self):
-        if not self.use_docker:
-            self.logger.info(f'Using the Crunner')
-            
-            path = os.path.dirname(os.path.abspath(__file__))
-            path = os.path.join(path, 'crunner')
-            p = subprocess.run(f"{path} {self.exe} {self.language} {self.case_id} {self.id} {self.timeout} {self.max_memory} {self.max_memory}".split())
-            self.logger.info(f'returncode: {p.returncode}')
+        self.logger.info(f'Using the Crunner')
+        
+        path = os.path.dirname(os.path.abspath(__file__))
+        path = os.path.join(path, 'crunner')
+        p = subprocess.run(f"{path} {self.exe} {self.language} {self.case_id} {self.id} {self.timeout} {self.max_memory} {self.max_memory}".split())
+        self.logger.info(f'returncode: {p.returncode}')
 
-            with open(f'{DEFAULT_TMP_PATH}/{self.id}/analysis_{self.case_id}.txt', 'r') as f:
-                analysis = f.read()
-            # 3 lines in analysis, decompose them into 3 vars
-            analysis = analysis.rstrip().split('\n')
-            self.status, self.time_usage, self.memory_usage = analysis[0], int(float(analysis[1])), int(analysis[2])
-            if self.status != "OK":
-                return {'success': False, 'error_type': self.status, 'time_usage': self.time_usage, 'memory_usage': self.memory_usage}
+        with open(f'{DEFAULT_TMP_PATH}/{self.id}/analysis_{self.case_id}.txt', 'r') as f:
+            analysis = f.read()
+        # 3 lines in analysis, decompose them into 3 vars
+        analysis = analysis.rstrip().split('\n')
+        self.status, self.time_usage, self.memory_usage = analysis[0], int(float(analysis[1])), int(analysis[2])
+        if self.status != "OK":
+            return {'success': False, 'error_type': self.status, 'time_usage': self.time_usage, 'memory_usage': self.memory_usage}
 
-            if self.use_spj:
-                return self._spj_run()
-            else:
-                return self._normal_run()
+        if self.use_spj:
+            return self._spj_run()
+        else:
+            return self._normal_run()
     
     def _normal_run(self):
         with open(f'{DEFAULT_TMP_PATH}/{self.id}/answer_{self.case_id}.out', 'r') as f:
