@@ -31,6 +31,14 @@ class Runner:
         
         path = os.path.dirname(os.path.abspath(__file__))
         path = os.path.join(path, 'crunner')
+        
+        # If path not exists, run make
+        if not os.path.exists(path):
+            abs_path = os.path.abspath(os.path.dirname(os.path.abspath(__file__)))
+            make_command = f"make -C {abs_path}"
+            result = subprocess.run(make_command.split(), check=True)
+            self.logger.info(f'make returncode: {result.returncode}')
+
         p = subprocess.run(f"{path} {self.exe} {self.language} {self.case_id} {self.id} {self.timeout} {self.max_memory} {self.max_memory}".split())
         self.logger.info(f'returncode: {p.returncode}')
 

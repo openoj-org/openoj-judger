@@ -22,7 +22,6 @@ def submit_code():
 
     task = judge_code.apply_async(args=[data])
 
-    # return jsonify({'task_id': task.id}), 202
     return {'id':task.id}
 
 @app.route('/get_result/<task_id>', methods=['GET'])
@@ -35,7 +34,6 @@ def get_result(task_id):
         result = {'ok': False}
 
     return jsonify(result)
-    # return result
 
 if __name__ == '__main__':
     app.run(debug=True)
