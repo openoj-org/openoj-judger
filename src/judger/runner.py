@@ -39,6 +39,13 @@ class Runner:
             result = subprocess.run(make_command.split(), check=True)
             self.logger.info(f'make returncode: {result.returncode}')
 
+        try:
+            with open(f'{DEFAULT_TMP_PATH}/{self.id}/analysis_{self.case_id}.txt', 'x'):
+                pass
+            print("Successfully created the analysis file")
+        except FileExistsError:
+            print("File already exists")
+            
         p = subprocess.run(f"{path} {self.exe} {self.language} {self.case_id} {self.id} {self.timeout} {self.max_memory} {self.max_memory}".split())
         self.logger.info(f'returncode: {p.returncode}')
 
