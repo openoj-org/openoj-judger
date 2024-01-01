@@ -1,0 +1,8 @@
+flower==1.0.0
+watchdog==2.1.5
+gunicorn==21.2.0
+celery==5.3.6
+colorama==0.4.6
+Flask==2.2.2
+werkzeug==2.2.3
+redis==5.0.1
