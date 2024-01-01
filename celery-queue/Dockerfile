@@ -19,3 +19,5 @@ RUN  apt update && \
 
 RUN pip3 install -U setuptools pip
 RUN pip3 install -r requirements.txt
+
+CMD celery -A tasks worker -l info -E
